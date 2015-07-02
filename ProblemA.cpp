@@ -49,5 +49,5 @@ int main(int argc, char* argv[]) {
 
 /*
 VERSION 01 16:56-17:31 http://ideone.com/pdi1fZ
-VERSION 02
+VERSION 02 http://ideone.com/jMYEiX
 */
