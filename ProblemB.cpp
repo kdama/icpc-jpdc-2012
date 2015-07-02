@@ -66,4 +66,5 @@ int main(int argc, char* argv[]) {
 
 /*
 VERSION 01 13:19-14:08 http://ideone.com/IcH2Ir
+
 */
