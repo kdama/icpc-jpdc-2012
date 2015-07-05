@@ -61,9 +61,9 @@ int main(int argc, char* argv[]) {
     for (i = 1; i <= MAX_I; i++) {
       a[i] = getMax(a[i - 1], L) - getMin(a[i - 1], L);
       for (j = 0; j < i; j++) {
-        if (i != j && a[i] == a[j]) break; // j is found!
+        if (i != j && a[i] == a[j]) break; // (i, j) is found!
       }
-      if (i != j && a[i] == a[j]) break; // j is found!
+      if (i != j && a[i] == a[j]) break; // (i, j) is found!
     }
     cout << j << " " << a[i] << " " << i - j << endl;
   }
