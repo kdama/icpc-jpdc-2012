@@ -79,7 +79,7 @@ void drop(int top, int front, int x, int y,
       next_front = top;
     } else if (sides[NUM_DIRECTION - 1] == opposite(front)) {
       direction = 1;
-      next_front = MAX_DICEFACE + MIN_DICEFACE - top;
+      next_front = opposite(top);
     } else if (sides[NUM_DIRECTION - 1] == opposite(third_side(top, front))) {
       direction = 2;
       next_front = front;
