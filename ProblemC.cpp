@@ -1,8 +1,6 @@
-#include <iostream>
 #include <algorithm>
 #include <functional>
-
-using namespace std;
+#include <iostream>
 
 const int MIN_DICEFACE  = 1;
 const int MAX_DICEFACE  = 6;
@@ -12,8 +10,8 @@ const int MAP_WIDTH     = MAX_N * 2 + 1;   // dice can roll N times in 4 directi
 const int MAP_HEIGHT    = MAX_N * 2 + 1;   // dice can roll N times in 4 directions.
 const int DROP_AT_X     = MAP_WIDTH / 2;   // center of map.
 const int DROP_AT_Y     = MAP_HEIGHT / 2;  // center of map.
-const int DIRECTION_X[] = { -1, 1,  0, 0}; // left, right, bottom, top
-const int DIRECTION_Y[] = {  0, 0, -1, 1}; // left, right, bottom, top
+const int DIRECTION_X[] = {-1, 1,  0, 0}; // left, right, bottom, top
+const int DIRECTION_Y[] = { 0, 0, -1, 1}; // left, right, bottom, top
 const int NUM_DIRECTION = sizeof(DIRECTION_X) / sizeof(DIRECTION_X[0]);
 
 typedef int Grid[MAP_WIDTH][MAP_HEIGHT];
@@ -34,6 +32,8 @@ int opposite(int face) {
 }
 
 int third_side(int top, int front) {
+  if (top < 1 || top > 6) return -1; // unexpected case
+
   if (top == 1) {
     if (front == 2) return 3;
     if (front == 3) return 5;
@@ -57,6 +57,8 @@ int third_side(int top, int front) {
 
 void drop(int top, int front, int x, int y,
           Grid top_grid, Grid height_grid) {
+  using std::sort;
+  
   int sides[NUM_DIRECTION];
   for (int i = 0; i < NUM_DIRECTION; i++) {
     if (height_grid[x][y] > height_grid[x + DIRECTION_X[i]][y + DIRECTION_Y[i]]) {
@@ -65,7 +67,9 @@ void drop(int top, int front, int x, int y,
       else if (i == 2) sides[i] = opposite(third_side(top, front));
       else if (i == 3) sides[i] = third_side(top, front);
     }
-    else sides[i] = 0;
+    else {
+      sides[i] = 0;
+    }
   }
   sort(sides, sides + NUM_DIRECTION);
   if (sides[NUM_DIRECTION - 1] < DROPPABLE_MIN) {
@@ -93,9 +97,13 @@ void drop(int top, int front, int x, int y,
 }
 
 int main(int argc, char* argv[]) {
+  using std::cin;
+  using std::cout;
+  using std::endl;
+
   while (1) {
     int N;
-    int top[MAX_N], front[MAX_N];           // top-face & front-face of i-th dice.
+    int top[MAX_N], front[MAX_N];     // top-face & front-face of i-th dice.
     Grid top_grid;                    // top-face map. 0 means no dice.
     Grid height_grid;                 // height; number of dice at (x, y).
     int face_count[MAX_DICEFACE + 1]; // use face_count[1] .. face_count[6].
@@ -128,4 +136,5 @@ int main(int argc, char* argv[]) {
 /*
 VERSION 01 17:23-18:30 http://ideone.com/4t13O2
 VERSION 02 http://ideone.com/wqy5p0
+VERSION 03 http://ideone.com/AJr0Ne
 */
