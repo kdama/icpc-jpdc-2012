@@ -8,6 +8,9 @@ typedef std::vector<std::vector<int>> Matrix;
 // MAX_COST == MAX_DIST * 100 == 1980000.
 const int INF = 10000000;
 
+// Output, which means "unreachable."
+const int UNREACHABLE = -1;
+
 // Floyd-Warshall algorithm.
 void floyd(int n, Matrix& matrix) {
     for (int k = 0; k < n; k++) {
@@ -25,25 +28,25 @@ int calc_cost(int dist, std::vector<int> q, std::vector<int> r) {
     
     int cost = 0;
     for (int i = 0; i < q.size(); i++) {
-    	if (i == 0) {
-    		if (dist <= q[i]) {
-    			cost += dist * r[i];
-    			dist -= dist;
-    			break;
-    		} else {
-    			cost += q[i] * r[i];
-    			dist -= q[i];
-    		}
-    	} else {
-    		if (dist <= q[i] - q[i - 1]) {
-    			cost += dist * r[i];
-    			dist -= dist;
-    			break;
-    		} else {
-    			cost += (q[i] - q[i - 1]) * r[i];
-    			dist -= (q[i] - q[i - 1]);
-    		}
-    	}
+        if (i == 0) {
+            if (dist <= q[i]) {
+                cost += dist * r[i];
+                dist -= dist;
+                break;
+            } else {
+                cost += q[i] * r[i];
+                dist -= q[i];
+            }
+        } else {
+            if (dist <= q[i] - q[i - 1]) {
+                cost += dist * r[i];
+                dist -= dist;
+                break;
+            } else {
+                cost += (q[i] - q[i - 1]) * r[i];
+                dist -= (q[i] - q[i - 1]);
+            }
+        }
     }
     cost += dist * r.back();
     
@@ -52,7 +55,7 @@ int calc_cost(int dist, std::vector<int> q, std::vector<int> r) {
 
 int main(int argc, char* argv[]) {
     int n, m, c, s, g;
-    while ((std::cin >> n >> m >> c >> s >> g) && (n | m | c | s | g))	{
+    while ((std::cin >> n >> m >> c >> s >> g) && (n | m | c | s | g)) {
         s--, g--;
         
         std::vector<Matrix> min_dist(c, Matrix(n, std::vector<int>(n, INF)));
@@ -106,7 +109,7 @@ int main(int argc, char* argv[]) {
         
         floyd(n, min_cost);
         
-        std::cout << (min_cost[s][g] < INF ? min_cost[s][g] : -1) << std::endl;
+        std::cout << (min_cost[s][g] < INF ? min_cost[s][g] : UNREACHABLE) << std::endl;
     }
     return 0;
 }
